@@ -1,8 +1,10 @@
 import { Camera, Layers, Node, warn, Widget } from "cc";
+import { Main } from "../../../../../../assets/script/Main";
 import { GUI } from "../GUI";
 import { UICallbacks } from "./Defines";
 import { DelegateComponent } from "./DelegateComponent";
 import { LayerDialog } from "./LayerDialog";
+import { LayerGame } from "./LayerGame";
 import { LayerNotify } from "./LayerNotify";
 import { LayerPopUp } from "./LayerPopup";
 import { LayerUI } from "./LayerUI";
@@ -58,7 +60,7 @@ export class LayerManager {
     /** 界面摄像机 */
     camera!: Camera;
     /** 游戏界面特效层 */
-    game!: Node;
+    game!: LayerGame;
     /** 新手引导层 */
     guide!: Node;
     /** 界面地图 */
@@ -145,6 +147,9 @@ export class LayerManager {
         }
 
         switch (config.layer) {
+            case LayerType.Game:
+                this.game.add(config, uiArgs, callbacks);
+                break;
             case LayerType.UI:
                 this.ui.add(config, uiArgs, callbacks);
                 break;
@@ -281,8 +286,7 @@ export class LayerManager {
         this.root = root;
         this.camera = this.root.getComponentInChildren(Camera)!;
 
-        this.game = this.create_node(LayerType.Game);
-
+        this.game = new LayerGame(LayerType.Game);
         this.ui = new LayerUI(LayerType.UI);
         this.popup = new LayerPopUp(LayerType.PopUp);
         this.dialog = new LayerDialog(LayerType.Dialog);
