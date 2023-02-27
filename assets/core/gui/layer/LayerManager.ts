@@ -229,6 +229,9 @@ export class LayerManager {
         }
 
         switch (config.layer) {
+            case LayerType.Game:
+                this.game.remove(config.prefab, isDestroy);
+                break;
             case LayerType.UI:
                 this.ui.remove(config.prefab, isDestroy);
                 break;
